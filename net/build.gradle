@@ -1,21 +1,19 @@
 plugins {
-    id 'com.android.application'
+    id 'com.android.library'
     id 'com.google.devtools.ksp' version '1.7.20-1.0.7'
     id 'org.jetbrains.kotlin.android'
 }
 
 android {
-    namespace 'com.twomonth.study'
+    namespace 'com.twomonth.net'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.twomonth.study"
         minSdk 21
         targetSdk 33
-        versionCode 1
-        versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
     }
 
     buildTypes {
@@ -28,14 +26,14 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-    applicationVariants.all { variant ->
-        sourceSets {
-            def name = variant.name
-            getByName(name) {  //告知IDE，ksp生成的kotlin代码
-                kotlin.srcDir("build/generated/ksp/$name/kotlin")
-            }
-        }
-    }
+//    applicationVariants.all { variant ->
+//        sourceSets {
+//            def name = variant.name
+//            getByName(name) {  //告知IDE，ksp生成的kotlin代码
+//                kotlin.srcDir("build/generated/ksp/$name/kotlin")
+//            }
+//        }
+//    }
 }
 ksp {
     arg("rxhttp_rxjava", "3.1.5")
@@ -45,20 +43,19 @@ dependencies {
 
     implementation 'androidx.appcompat:appcompat:1.4.2'
     implementation 'com.google.android.material:material:1.5.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation 'androidx.core:core-ktx:1.7.0'
-    implementation 'androidx.lifecycle:lifecycle-process:2.4.1'
-    implementation project(path: ':base')
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 
+    // 网络日志框架
+    api 'com.github.fengzhizi715:saf-logginginterceptor:v1.6.13'
+
     def rxhttp_version = '3.0.0'
-    implementation 'com.squareup.okhttp3:okhttp:4.10.0'
-    implementation "com.github.liujingxing.rxhttp:rxhttp:$rxhttp_version"
+    api 'com.squareup.okhttp3:okhttp:4.10.0'
+    api "com.github.liujingxing.rxhttp:rxhttp:$rxhttp_version"
     ksp "com.github.liujingxing.rxhttp:rxhttp-compiler:$rxhttp_version"
     //RxJava3
-    implementation 'io.reactivex.rxjava3:rxjava:3.1.5'
-    implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
-    implementation 'com.github.liujingxing.rxlife:rxlife-rxjava3:2.2.2' //管理RxJava3生命周期，页面销毁，关闭请求
+    api 'io.reactivex.rxjava3:rxjava:3.1.5'
+    api 'io.reactivex.rxjava3:rxandroid:3.0.0'
+    api 'com.github.liujingxing.rxlife:rxlife-rxjava3:2.2.2' //管理RxJava3生命周期，页面销毁，关闭请求
 }
